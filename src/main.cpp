@@ -4,7 +4,7 @@
 #include <vector>
 
 
-// Character Map, the first index is SSR, the seccond is SR, the third is R
+// Character pool, index one is SSR, then SR, then R
 std::vector<std::vector<std::string>> characters = {{"Yuki Kazue", "Asuka Langley Soryu", "Hatsune Miku"}, {"Toji Fushiguro", "Shiki Rowan", "Kasane Teto"}, {"Megumin", "Aqua", "Akita Neru"}};
 
 int randomNumberRange(int low, int high){
@@ -15,14 +15,25 @@ int randomNumberRange(int low, int high){
   return distr(gen);
 }
 
-void pull(){
-  int rank = randomNumberRange(0, 2);
+void pull(int& pity){
+  int rank;
+
+  if (pity > 6){
+    rank = randomNumberRange(0, 1);
+    pity = 0;
+  }
+  else {
+    rank = 2;
+    pity += 1;
+  }
+
   int character = randomNumberRange(0, 2);
 
-  std::cout << "You rolled: " << characters[rank][character] << '\n';  
+  std::cout << "You rolled: " << characters[rank][character] << '\n';
 }
 
 int main(){
+  int pity = 0;
 
   while (true){
     char choice;
@@ -33,10 +44,10 @@ int main(){
       break;
     }
     else if (choice == 'r'){
-      pull();
+      pull(pity);
     }
     else std::cout << "Incorect Command\n";
   }
-  
+
   return 0;
 }
